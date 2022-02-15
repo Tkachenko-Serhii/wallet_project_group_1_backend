@@ -1,0 +1,135 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "version": "1.0.0",
+      "title": "Swagger test",
+      "description": "Showing off swagger-ui-express",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "consumes": ["application/json", "multipart/form-data"],
+    "produces": ["application/json", "multipart/form-data"],
+    "servers": [{ "url": "http://wallet-project-group-1.herokuapp.com" }, { "url": "http://localhost:3001" }],
+    "tags": [
+      {
+        "name": "UserAuth",
+        "description": "Authorization endpoints"
+      },
+      {
+        "name": "Transactions",
+        "description": "Transaction endpoints"
+      },
+      {
+        "name": "Developers",
+        "description": "Developers endpoints"
+      }
+    ],
+    "paths": {
+      "/users/signup": {
+        "post": {
+          "tags": ["UserAuth"],
+          "summary": "User registration",
+          "parameters": [],
+          "security": [{ "Bearer": [] }],
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RegistrationResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found",
+              "content": {}
+            },
+            "409": {
+              "description": "Email in use",
+              "content": {}
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "RegistrationRequest": {
+          "type": "object",
+          "required": ["name", "email", "password"],
+          "properties": {
+            "name": {
+                "type": "string",
+                "description": "User's name",
+                "format": "name"
+              },
+
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "password": {
+              "type": "string",
+              "description": "User's password",
+              "example": "qwerty123"
+            }
+          }
+        },
+        "RegistrationResponse": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "description": "User's token",
+                    "format": "string"
+                  },
+              "user":{
+                  "email": {
+                  "type": "string",
+                  "description": "User's email",
+                  "format": "email"
+              },
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "format": "string"
+            }
+            }
+          }
+        },
+          "example": [
+            { "token":"eyJ0eXAiOiJKV1QiLC.eyJ1c2VySWQiOiJiMDhmODZhZi0.-xN_h82PHVTdoHrcZxH-x5mb11y1cM",
+                "user": {
+                    "email": "1@gmail.com", 
+                    "name": "One" 
+                }}
+          ]
+        }
+      },
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }

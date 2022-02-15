@@ -29,9 +29,8 @@ router.post('/signup', async (req, res, next) => {
       password: hashPassword,
     });
     res.status(201).json({
-      user: {
-        email: newUser.email,
-      },
+      token,
+      user: { email, name },
     });
   } catch (error) {
     next(error);
