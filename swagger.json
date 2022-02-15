@@ -115,13 +115,12 @@
             }
           }
         },
-          "example": [
+          "example": 
             { "token":"eyJ0eXAiOiJKV1QiLC.eyJ1c2VySWQiOiJiMDhmODZhZi0.-xN_h82PHVTdoHrcZxH-x5mb11y1cM",
-                "user": {
+                "user":{ 
                     "email": "1@gmail.com", 
                     "name": "One" 
                 }}
-          ]
         }
       },
       "securitySchemes": {
