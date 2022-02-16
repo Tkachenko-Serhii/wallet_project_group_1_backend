@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const usersRouter = require('./routes/api/users');
 const transactionsRouter = require('./routes/api/transactions');
-const developersRouter = require('./routes/api/developers');
+// const developersRouter = require('./routes/api/developers');
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/users', usersRouter);
-// app.use('/transactions', transactionsRouter);
+app.use('/transactions', transactionsRouter);
 // app.use('/developers', developersRouter);
 
 app.use((req, res) => {

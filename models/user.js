@@ -21,6 +21,10 @@ const userSchema = Schema(
       type: String,
       required: [true, 'Your name is required'],
     },
+    balance: {
+      type: Number,
+      default: 0,
+    },
     token: {
       type: String,
       default: null,
