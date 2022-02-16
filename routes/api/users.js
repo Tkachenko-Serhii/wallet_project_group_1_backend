@@ -3,11 +3,11 @@ const { BadRequest, Conflict, Unauthorized } = require('http-errors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { authenticate } = require("../../middlewares");
+const { authenticate } = require('../../middlewares');
 
 const { User } = require('../../models');
 const { joiRegisterSchema, joiLoginSchema } = require('../../models/user');
-
+const router = express.Router();
 const { SECRET_KEY } = process.env;
 
 router.post('/signup', async (req, res, next) => {
@@ -29,9 +29,8 @@ router.post('/signup', async (req, res, next) => {
       password: hashPassword,
     });
     res.status(201).json({
-      user: {
-        email: newUser.email,
-      },
+      token,
+      user: { email, name },
     });
   } catch (error) {
     next(error);
