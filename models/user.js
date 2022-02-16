@@ -3,6 +3,8 @@ const Joi = require('joi');
 
 // eslint-disable-next-line no-useless-escape
 const emailRegexp = /^\w+([\.-]?\w+)+@\w+([\.:]?\w+)+(\.[a-zA-Z0-9]{2,3})+$/;
+const passwordRegExp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/;
 
 const userSchema = Schema(
   {
@@ -15,7 +17,7 @@ const userSchema = Schema(
     password: {
       type: String,
       required: [true, 'Password is required'],
-      minlength: 7,
+      match: passwordRegExp,
     },
     name: {
       type: String,
