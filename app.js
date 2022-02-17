@@ -8,7 +8,8 @@ const swaggerDocument = require('./swagger.json');
 
 const usersRouter = require('./routes/api/users');
 const transactionsRouter = require('./routes/api/transactions');
-const developersRouter = require('./routes/api/developers');
+// const developersRouter = require('./routes/api/developers');
+const categoryRouter = require('./routes/api/categoryes');
 
 const app = express();
 
@@ -19,8 +20,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/users', usersRouter);
-// app.use('/transactions', transactionsRouter);
+app.use('/transactions', transactionsRouter);
 // app.use('/developers', developersRouter);
+app.use('/category', categoryRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res) => {
