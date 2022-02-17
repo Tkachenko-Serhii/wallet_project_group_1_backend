@@ -25,9 +25,6 @@ const updateById = async (req, res, next) => {
       id,
       {
         ...req.body,
-        day: format('dd'),
-        month: format('MM'),
-        year: format('yyyy'),
         balance: newBalance,
       },
       { new: true },

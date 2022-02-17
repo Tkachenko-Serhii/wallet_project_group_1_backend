@@ -1,4 +1,3 @@
-const format = require('date-format');
 const {
   Transaction,
   schemaCreateTransaction,
@@ -20,9 +19,6 @@ const create = async (req, res, next) => {
 
     const newTransaction = await Transaction.create({
       ...req.body,
-      day: format('dd'),
-      month: format('MM'),
-      year: format('yyyy'),
       balance: newBalance,
       owner: _id,
     });

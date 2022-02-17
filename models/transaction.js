@@ -3,15 +3,15 @@ const Joi = require('joi');
 
 const transactionSchema = Schema(
   {
-    day: {
-      type: String,
-      required: true,
-    },
     month: {
       type: String,
       required: true,
     },
     year: {
+      type: String,
+      required: true,
+    },
+    date: {
       type: String,
       required: true,
     },

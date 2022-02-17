@@ -48,14 +48,17 @@ router.post('/login', async (req, res, next) => {
     if (!user) {
       throw new Unauthorized('Email is wrong');
     }
+
     const passwordCompare = await bcrypt.compare(password, user.password);
     if (!passwordCompare) {
       throw new Unauthorized('Password is wrong');
     }
+
     const { _id, name } = user;
     const payload = {
       id: _id,
     };
+
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
     await User.findByIdAndUpdate(_id, { token });
     res.json({
