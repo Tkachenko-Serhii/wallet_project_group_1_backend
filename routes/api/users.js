@@ -45,12 +45,9 @@ router.post('/login', async (req, res, next) => {
     }
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
-      throw new Unauthorized('Email is wrong');
-    }
     const passwordCompare = await bcrypt.compare(password, user.password);
-    if (!passwordCompare) {
-      throw new Unauthorized('Password is wrong');
+    if (!user || !passwordCompare) {
+      throw new Unauthorized('Email does not exist or Password is wrong');
     }
     const { _id, name } = user;
     const payload = {
