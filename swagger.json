@@ -14,8 +14,8 @@
     "servers": [{ "url": "http://wallet-project-group-1.herokuapp.com" }, { "url": "http://localhost:3001" }],
     "tags": [
       {
-        "name": "UserAuth",
-        "description": "Authorization endpoints"
+        "name": "UserAuthInfo",
+        "description": "Authorization and info endpoints"
       },
       {
         "name": "Transactions",
@@ -29,7 +29,7 @@
     "paths": {
       "/users/signup": {
         "post": {
-          "tags": ["UserAuth"],
+          "tags": ["UserAuthInfo"],
           "summary": "User registration",
           "parameters": [],
           "security": [{ "Bearer": [] }],
@@ -62,9 +62,102 @@
             "409": {
               "description": "Email in use",
               "content": {}
+            },
+            "500": {
+              "description": "Server error",
+              "content": {}
             }
           }
         }
+      },
+      "/users/login": {
+        "post": {
+          "tags": ["UserAuthInfo"],
+          "summary": "User authentication",
+          "security": [{ "Bearer": [] }],
+          "parameters": [],
+          "requestBody": {
+            "description": "Authentication's object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Email doesn't exist / Password is wrong",
+              "content": {}
+            },
+            "404": {
+              "description": "Not found",
+              "content": {}
+            },
+            "500": {
+              "description": "Server error",
+              "content": {}
+            }
+          }
+        }
+      },
+      "/users/logout": {
+        "post": {
+          "tags": ["UserAuthInfo"],
+          "summary": "Logout",
+          "security": [{ "Bearer": [] }],
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": "Successful operation",
+              "content": {}
+            },
+            "404": {
+              "description": "Not found",
+              "content": {}
+            },
+            "500": {
+              "description": "Server error",
+              "content": {}
+            }  
+          }
+        }
+      },
+      "/users/current": {
+        "get": {
+          "tags": ["UserAuthInfo"],
+          "summary": "Get current user info",
+          "parameters": [],
+          "security": [{ "Bearer": [] }],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetUserInfo"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Not authorized (invalid access token)",
+              "content": {}
+            }
+          }
+       }
       }
     },
     "components": {
@@ -98,8 +191,7 @@
             "properties": {
                 "token": {
                     "type": "string",
-                    "description": "User's token",
-                    "format": "string"
+                    "description": "User's token"
                   },
               "user":{
                   "email": {
@@ -109,19 +201,89 @@
               },
               "name": {
                 "type": "string",
-                "description": "User's name",
-                "format": "string"
+                "description": "User's name"
             }
             }
           }
         },
           "example": 
-            { "token":"eyJ0eXAiOiJKV1QiLC.eyJ1c2VySWQiOiJiMDhmODZhZi0.-xN_h82PHVTdoHrcZxH-x5mb11y1cM",
+            { "token":"xxxxx.yyyyy.zzzzz",
                 "user":{ 
                     "email": "1@gmail.com", 
                     "name": "One" 
                 }}
-        }
+        },
+        "LoginRequest": {
+          "required": ["email", "password"],
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "password": {
+              "type": "string",
+              "description": "User's password",
+              "example": "qwerty123"
+            }
+          }
+        },
+        "LoginResponse": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "description": "User's token"
+                  },
+              "user":{
+                  "email": {
+                  "type": "string",
+                  "description": "User's email",
+                  "format": "email"
+              },
+              "name": {
+                "type": "string",
+                "description": "User's name"
+            }
+            }
+          }
+        },
+          "example": 
+            { "token":"xxxxx.yyyyy.zzzzz",
+                "user":{ 
+                    "email": "1@gmail.com", 
+                    "name": "One" 
+                }} 
+         },
+         "GetUserInfo":{
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "User's token"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "name": {
+                "type": "string",
+                "description": "User's name"
+              },
+              "id": {
+                "type": "string",
+                "description": "User's id"
+              }
+            },
+            "example": 
+            { }
+         }
+
+
       },
       "securitySchemes": {
         "Bearer": {
