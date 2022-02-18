@@ -2,6 +2,7 @@ const express = require('express');
 const { BadRequest, Conflict, Unauthorized } = require('http-errors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { nanoid } = require('nanoid');
 
 const { authenticate } = require('../../middlewares');
 
@@ -23,14 +24,23 @@ router.post('/signup', async (req, res, next) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
+    const id = nanoid(16);
+    const payload = {
+      id,
+    };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
     const newUser = await User.create({
       name,
       email,
       password: hashPassword,
+      token,
     });
     res.status(201).json({
-      token,
-      user: { email, name },
+      token: newUser.token,
+      user: {
+        name: newUser.name,
+        email: newUser.email,
+      },
     });
   } catch (error) {
     next(error);
