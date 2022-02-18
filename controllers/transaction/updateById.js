@@ -1,4 +1,3 @@
-const format = require('date-format');
 const { NotFound } = require('http-errors');
 const {
   Transaction,
