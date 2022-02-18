@@ -49,10 +49,12 @@ router.post('/login', async (req, res, next) => {
     if (!user || !passwordCompare) {
       throw new Unauthorized('Email does not exist or Password is wrong');
     }
+
     const { _id, name } = user;
     const payload = {
       id: _id,
     };
+
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
     await User.findByIdAndUpdate(_id, { token });
     res.json({

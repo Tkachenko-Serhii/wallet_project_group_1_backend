@@ -10,6 +10,8 @@ router.get('/', authenticate, ctrl.getAll);
 
 router.post('/create', authenticate, ctrl.create);
 
-router.put('/:id', authenticate, ctrl.updateById);
+// router.put('/:id', authenticate, ctrl.updateById);
+
+// router.delete('./:id', authenticate, ctrl.deleteById);
 
 module.exports = router;

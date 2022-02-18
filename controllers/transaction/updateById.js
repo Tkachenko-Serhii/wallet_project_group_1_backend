@@ -1,4 +1,3 @@
-const format = require('date-format');
 const { NotFound } = require('http-errors');
 const {
   Transaction,
@@ -25,9 +24,6 @@ const updateById = async (req, res, next) => {
       id,
       {
         ...req.body,
-        day: format('dd'),
-        month: format('MM'),
-        year: format('yyyy'),
         balance: newBalance,
       },
       { new: true },
