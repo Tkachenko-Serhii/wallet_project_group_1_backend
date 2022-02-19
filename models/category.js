@@ -30,7 +30,7 @@ const schemaCategory = Joi.object({
   type: Joi.bool().required(),
 });
 
-const Category = model('categoryes', categorySchema);
+const Category = model('categories', categorySchema);
 
 module.exports = {
   Category,
