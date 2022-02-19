@@ -22,6 +22,10 @@
         "description": "Transaction endpoints"
       },
       {
+        "name": "Categories",
+        "description": "Category endpoints"
+      },
+      {
         "name": "Developers",
         "description": "Developers endpoints"
       }
@@ -32,7 +36,6 @@
           "tags": ["UserAuthInfo"],
           "summary": "User registration",
           "parameters": [],
-          "security": [{ "Bearer": [] }],
           "requestBody": {
             "description": "Registration's object",
             "required": true,
@@ -74,8 +77,7 @@
         "post": {
           "tags": ["UserAuthInfo"],
           "summary": "User authentication",
-          "security": [{ "Bearer": [] }],
-          "parameters": [],
+           "parameters": [],
           "requestBody": {
             "description": "Authentication's object",
             "required": true,
@@ -155,9 +157,85 @@
             "401": {
               "description": "Not authorized (invalid access token)",
               "content": {}
+            },
+            "404": {
+              "description": "Not found",
+              "content": {}
+            },
+            "500": {
+              "description": "Server error",
+              "content": {}
             }
           }
        }
+      },
+      "/categories":{
+        "get": {
+          "tags": ["Categories"],
+          "summary": "Get list of categories",
+          "parameters": [],
+          "security": [{ "Bearer": [] }],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAllCategories"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Not authorized (invalid access token)",
+              "content": {}
+            },
+            "404": {
+              "description": "Not found",
+              "content": {}
+            },
+            "500": {
+              "description": "Server error",
+              "content": {}
+            }}}
+      },
+      "/categories/add":{
+        "post": {
+          "tags": ["Categories"],
+          "summary": "Add new category",
+           "parameters": [],
+          "requestBody": {
+            "description": "Authentication's object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCategoryRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AddCategoryResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found",
+              "content": {}
+            },
+            "500": {
+              "description": "Server error",
+              "content": {}
+            }
+          }
+        }
       }
     },
     "components": {
@@ -185,32 +263,33 @@
           }
         },
         "RegistrationResponse": {
-          "type": "array",
-          "items": {
             "type": "object",
             "properties": {
                 "token": {
                     "type": "string",
                     "description": "User's token"
                   },
-              "user":{
-                  "email": {
-                  "type": "string",
-                  "description": "User's email",
-                  "format": "email"
-              },
-              "name": {
-                "type": "string",
-                "description": "User's name"
+                "user":{
+                  "type": "object",
+                  "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "User's name"
+                      },
+                        "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email"
+                      }     
+                }
             }
-            }
-          }
         },
           "example": 
             { "token":"xxxxx.yyyyy.zzzzz",
-                "user":{ 
-                    "email": "1@gmail.com", 
-                    "name": "One" 
+                "user":{
+                    "name": "One",
+                    "email": "1@gmail.com"  
+                    
                 }}
         },
         "LoginRequest": {
@@ -230,60 +309,122 @@
           }
         },
         "LoginResponse": {
-          "type": "array",
-          "items": {
             "type": "object",
             "properties": {
                 "token": {
                     "type": "string",
                     "description": "User's token"
                   },
-              "user":{
-                  "email": {
-                  "type": "string",
-                  "description": "User's email",
-                  "format": "email"
-              },
-              "name": {
-                "type": "string",
-                "description": "User's name"
-            }
-            }
-          }
-        },
+                "user":{
+                  "type": "object",
+                  "properties":{
+                      "name": {
+                      "type": "string",
+                      "description": "User's name"
+                    },
+                        "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email"
+                    },
+                    "balance": {
+                      "type": "number",
+                      "description": "User's balance"
+                }}}
+            },
           "example": 
             { "token":"xxxxx.yyyyy.zzzzz",
-                "user":{ 
-                    "email": "1@gmail.com", 
-                    "name": "One" 
+                "user":{
+                  "name": "One", 
+                  "email": "1@gmail.com", 
+                  "balance": "24000.05" 
                 }} 
-         },
+        },
          "GetUserInfo":{
+          "type": "object",
+          "properties": {
+              "user":{
+                "type": "object",
+                "properties":{
+                    "name": {
+                      "type": "string",
+                      "description": "User's name"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "User's email",
+                      "format": "email"
+                    },
+                    "balance": {
+                      "type": "number",
+                      "description": "User's balance"
+                    }}}
+                  },
+              "example": 
+              {"user":{
+                  "name": "One", 
+                  "email": "1@gmail.com", 
+                  "balance": "24000.05" 
+                }} 
+        },
+         "GetAllCategories":{
+          "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+            "value": {
+              "type": "string",
+              "description": "User's category"
+            },
+            "lable": {
+              "type": "string",
+              "description": "User's category"
+            },
+          "type": {
+            "type": "Boolean",
+            "description": "true/false"
+          }}
+        },
+        "example": [
+          { "": "...", "... ": "..." },
+          { "": "...", "....": "..." }
+        ]
+        },
+        "AddCategoryRequest":{
+          "required": ["value", "lable", "type"],
             "type": "object",
             "properties": {
-              "token": {
+              "value": {
                 "type": "string",
-                "description": "User's token"
+                "description": "User's category"
               },
-              "email": {
+              "lable": {
                 "type": "string",
-                "description": "User's email",
-                "format": "email"
+                "description": "User's category"
               },
-              "name": {
-                "type": "string",
-                "description": "User's name"
-              },
-              "id": {
-                "type": "string",
-                "description": "User's id"
-              }
+            "type": {
+              "type": "Boolean",
+              "description": "true/false"
+            }
+            }
+        },
+        "AddCategoryResponse":{
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "string",
+              "description": "User's category"
             },
-            "example": 
-            { }
-         }
-
-
+            "lable": {
+              "type": "string",
+              "description": "User's category"
+              },
+            "type": {
+              "type": "Boolean",
+              "description": "true/false"
+          }},
+          "example": {}
+        }
       },
       "securitySchemes": {
         "Bearer": {

@@ -69,7 +69,7 @@ router.post('/login', async (req, res, next) => {
     await User.findByIdAndUpdate(_id, { token });
     res.json({
       token,
-      user: { email, name },
+      user: { email, name, balance },
     });
   } catch (error) {
     next(error);
@@ -88,6 +88,7 @@ router.get('/current', authenticate, async (req, res) => {
     user: {
       name,
       email,
+      balance,
     },
   });
 });

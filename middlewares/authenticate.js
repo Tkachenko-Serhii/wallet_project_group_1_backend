@@ -20,7 +20,7 @@ const authenticate = async (req, res, next) => {
     if (!user) {
       throw new Unauthorized('Not authorized');
     }
-
+    
     const TokenExpired = isTokenExpired(token);
 
     if (TokenExpired) {
