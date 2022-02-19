@@ -60,7 +60,7 @@ router.post('/login', async (req, res, next) => {
       throw new Unauthorized('Email does not exist or Password is wrong');
     }
 
-    const { _id, name } = user;
+    const { _id, name, balance } = user;
     const payload = {
       id: _id,
     };
@@ -83,7 +83,7 @@ router.get('/logout', authenticate, async (req, res) => {
 });
 
 router.get('/current', authenticate, async (req, res) => {
-  const { name, email } = req.user;
+  const { name, email, balance } = req.user;
   res.json({
     user: {
       name,
