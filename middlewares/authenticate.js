@@ -20,11 +20,10 @@ const authenticate = async (req, res, next) => {
     if (!user) {
       throw new Unauthorized('Not authorized');
     }
-    const isTokenExpired = token =>
-      Date.now() >=
-      JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()).exp *
-        1000;
-    if (isTokenExpired) {
+
+    const TokenExpired = isTokenExpired(token);
+
+    if (TokenExpired) {
       throw new Unauthorized('Token is expired');
     }
     req.user = user;
@@ -37,5 +36,9 @@ const authenticate = async (req, res, next) => {
     next(error);
   }
 };
+
+const isTokenExpired = token =>
+  Date.now() >=
+  JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()).exp * 1000;
 
 module.exports = authenticate;
