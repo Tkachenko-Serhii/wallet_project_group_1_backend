@@ -2,7 +2,11 @@ const { NotFound } = require('http-errors');
 const { Transaction } = require('../../models/transaction');
 
 const getStat = async (req, res, next) => {
-  const { month, year } = req.body;
+  let currentDate = new Date();
+  let currentMonth = currentDate.getMonth() + 1;
+  let currentYear = currentDate.getFullYear();
+
+  const { month = currentMonth, year = currentYear } = req.query;
   const { _id } = req.user;
 
   try {
@@ -60,7 +64,7 @@ const getStat = async (req, res, next) => {
         },
       },
     ]);
-    if (!stat) {
+    if (!statSpent || !totalSpent || !totalIncome) {
       throw new NotFound();
     }
     res.json([statSpent, totalSpent, totalIncome]);
