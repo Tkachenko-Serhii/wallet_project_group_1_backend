@@ -13,7 +13,7 @@ const getStat = async (req, res, next) => {
     const statSpent = await Transaction.aggregate([
       {
         $match: {
-          owner: { _id },
+          owner: _id,
           year: Number(year),
           month: Number(month),
           type: false,
@@ -31,7 +31,7 @@ const getStat = async (req, res, next) => {
     const totalSpent = await Transaction.aggregate([
       {
         $match: {
-          owner: { _id },
+          owner: _id,
           year: Number(year),
           month: Number(month),
           type: false,
@@ -40,7 +40,7 @@ const getStat = async (req, res, next) => {
       {
         $group: {
           _id: 'spent',
-          total: {
+          totalSpent: {
             $sum: '$sum',
           },
         },
@@ -49,7 +49,7 @@ const getStat = async (req, res, next) => {
     const totalIncome = await Transaction.aggregate([
       {
         $match: {
-          owner: { _id },
+          owner: _id,
           year: Number(year),
           month: Number(month),
           type: true,
@@ -58,7 +58,7 @@ const getStat = async (req, res, next) => {
       {
         $group: {
           _id: 'income',
-          total: {
+          totalIncome: {
             $sum: '$sum',
           },
         },
