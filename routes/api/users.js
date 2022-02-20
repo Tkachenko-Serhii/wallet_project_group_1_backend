@@ -40,6 +40,7 @@ router.post('/signup', async (req, res, next) => {
       user: {
         name: newUser.name,
         email: newUser.email,
+        balance: newUser.balance,
       },
     });
   } catch (error) {
