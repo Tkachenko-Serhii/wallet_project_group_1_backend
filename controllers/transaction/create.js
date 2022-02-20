@@ -13,7 +13,7 @@ const create = async (req, res, next) => {
     }
     const { _id, balance } = req.user;
     const { sum, type } = req.body;
-    const newBalance = calculateBalance(type, Number(balance), Number(sum));
+    const newBalance = calculateBalance(type, balance, sum);
 
     await User.findByIdAndUpdate(_id, { balance: newBalance });
 
