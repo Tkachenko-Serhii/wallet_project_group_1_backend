@@ -6,9 +6,9 @@ function calculateBalance(type, balance, sum) {
     if (sum > balance) {
       throw Error('Insufficient funds on your balance');
     }
-    return (balance -= sum);
+    return (balance -= sum).toFixed(2);
   }
-  return (balance += sum);
+  return (balance += sum).toFixed(2);
 }
 
 module.exports = calculateBalance;
