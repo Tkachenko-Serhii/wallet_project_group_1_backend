@@ -30,7 +30,7 @@ const transactionSchema = Schema(
     sum: {
       type: Number,
       required: true,
-      min: 0,
+      min: 0.01,
     },
     balance: {
       type: Number,
