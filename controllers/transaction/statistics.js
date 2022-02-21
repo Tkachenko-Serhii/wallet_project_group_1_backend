@@ -3,9 +3,16 @@ const { Transaction } = require('../../models/transaction');
 const { User } = require('../../models');
 
 const getStat = async (req, res, next) => {
-  const { month, year } = req.query;
-  const { _id } = req.user;
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+  const currentYear = currentDate.getUTCFullYear();
 
+  let { month, year } = req.query;
+  if (!month && !year) {
+    month = currentMonth;
+    year = currentYear;
+  }
+  const { _id } = req.user;
   try {
     const categories = await Transaction.aggregate([
       {

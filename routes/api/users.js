@@ -96,9 +96,7 @@ router.get('/current', authenticate, async (req, res) => {
 
 router.get('/balance', authenticate, async (req, res) => {
   const { balance } = req.user;
-  res.json({
-    balance,
-  });
+  res.json(balance);
 });
 
 module.exports = router;
