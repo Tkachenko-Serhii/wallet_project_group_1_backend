@@ -2,6 +2,7 @@ const express = require('express');
 const { BadRequest, Conflict, Unauthorized } = require('http-errors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { nanoid } = require('nanoid');
 
 const { authenticate } = require('../../middlewares');
 
@@ -23,14 +24,24 @@ router.post('/signup', async (req, res, next) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
+    const id = nanoid(16);
+    const payload = {
+      id,
+    };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
     const newUser = await User.create({
       name,
       email,
       password: hashPassword,
+      token,
     });
     res.status(201).json({
-      token,
-      user: { email, name },
+      token: newUser.token,
+      user: {
+        name: newUser.name,
+        email: newUser.email,
+        balance: newUser.balance,
+      },
     });
   } catch (error) {
     next(error);
@@ -45,16 +56,12 @@ router.post('/login', async (req, res, next) => {
     }
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
-      throw new Unauthorized('Email is wrong');
-    }
-
     const passwordCompare = await bcrypt.compare(password, user.password);
-    if (!passwordCompare) {
-      throw new Unauthorized('Password is wrong');
+    if (!user || !passwordCompare) {
+      throw new Unauthorized('Email does not exist or Password is wrong');
     }
 
-    const { _id, name } = user;
+    const { _id, name, balance } = user;
     const payload = {
       id: _id,
     };
@@ -63,7 +70,7 @@ router.post('/login', async (req, res, next) => {
     await User.findByIdAndUpdate(_id, { token });
     res.json({
       token,
-      user: { email, name },
+      user: { email, name, balance },
     });
   } catch (error) {
     next(error);
@@ -77,12 +84,20 @@ router.get('/logout', authenticate, async (req, res) => {
 });
 
 router.get('/current', authenticate, async (req, res) => {
-  const { name, email } = req.user;
+  const { name, email, balance } = req.user;
   res.json({
     user: {
       name,
       email,
+      balance,
     },
+  });
+});
+
+router.get('/balance', authenticate, async (req, res) => {
+  const { balance } = req.user;
+  res.json({
+    balance,
   });
 });
 

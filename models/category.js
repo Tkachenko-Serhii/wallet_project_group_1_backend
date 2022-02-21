@@ -11,6 +11,11 @@ const categorySchema = Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'user',
@@ -22,9 +27,10 @@ const categorySchema = Schema(
 const schemaCategory = Joi.object({
   value: Joi.string().required(),
   label: Joi.string().required(),
+  type: Joi.bool().required(),
 });
 
-const Category = model('category', categorySchema);
+const Category = model('categories', categorySchema);
 
 module.exports = {
   Category,

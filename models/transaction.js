@@ -4,11 +4,11 @@ const Joi = require('joi');
 const transactionSchema = Schema(
   {
     month: {
-      type: String,
+      type: Number,
       required: true,
     },
     year: {
-      type: String,
+      type: Number,
       required: true,
     },
     date: {
@@ -44,17 +44,23 @@ const transactionSchema = Schema(
 );
 
 const schemaCreateTransaction = Joi.object({
+  month: Joi.number().min(1).max(12).integer().required(),
+  year: Joi.number().min(1975).integer().required(),
+  date: Joi.string().required(),
   type: Joi.boolean().required(),
   category: Joi.string().required(),
   comment: Joi.string().optional(),
-  sum: Joi.number().min(0).integer().required(),
+  sum: Joi.number().min(0.01).integer().required(),
 });
 
 const schemaUpdateTransaction = Joi.object({
+  month: Joi.number().min(1).max(12).integer().required(),
+  year: Joi.number().min(1975).integer().required(),
+  date: Joi.string().required(),
   type: Joi.boolean().required(),
   category: Joi.string().optional(),
   comment: Joi.string().optional(),
-  sum: Joi.number().min(0).integer().optional(),
+  sum: Joi.number().min(0.01).integer().optional(),
 }).or('type', 'category', 'comment', 'sum');
 
 const Transaction = model('transaction', transactionSchema);

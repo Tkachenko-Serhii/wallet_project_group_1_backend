@@ -17,7 +17,6 @@ const userSchema = Schema(
     password: {
       type: String,
       required: [true, 'Password is required'],
-      match: passwordRegExp,
     },
     name: {
       type: String,
@@ -37,13 +36,13 @@ const userSchema = Schema(
 
 const joiRegisterSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(7).required(),
+  password: Joi.string().pattern(passwordRegExp).required(),
   name: Joi.string().required(),
 });
 
 const joiLoginSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(7).required(),
+  password: Joi.string().pattern(passwordRegExp).required(),
 });
 
 const User = model('user', userSchema);
