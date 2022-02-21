@@ -1,19 +1,23 @@
 const { NotFound } = require('http-errors');
 const { Transaction } = require('../../models/transaction');
+const { User } = require('../../models');
 
 const getStat = async (req, res, next) => {
-  let currentDate = new Date();
-  let currentMonth = currentDate.getMonth() + 1;
-  let currentYear = currentDate.getFullYear();
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+  const currentYear = currentDate.getUTCFullYear();
 
-  const { month = currentMonth, year = currentYear } = req.query;
+  let { month, year } = req.query;
+  if (!month && !year) {
+    month = currentMonth;
+    year = currentYear;
+  }
   const { _id } = req.user;
-
   try {
-    const statSpent = await Transaction.aggregate([
+    const categories = await Transaction.aggregate([
       {
         $match: {
-          owner: { _id },
+          owner: _id,
           year: Number(year),
           month: Number(month),
           type: false,
@@ -31,7 +35,7 @@ const getStat = async (req, res, next) => {
     const totalSpent = await Transaction.aggregate([
       {
         $match: {
-          owner: { _id },
+          owner: _id,
           year: Number(year),
           month: Number(month),
           type: false,
@@ -39,17 +43,18 @@ const getStat = async (req, res, next) => {
       },
       {
         $group: {
-          _id: 'spent',
-          total: {
+          _id: 0,
+          spent: {
             $sum: '$sum',
           },
         },
       },
+      { $project: { _id: 0, spent: '$spent' } },
     ]);
     const totalIncome = await Transaction.aggregate([
       {
         $match: {
-          owner: { _id },
+          owner: _id,
           year: Number(year),
           month: Number(month),
           type: true,
@@ -58,16 +63,19 @@ const getStat = async (req, res, next) => {
       {
         $group: {
           _id: 'income',
-          total: {
+          income: {
             $sum: '$sum',
           },
         },
       },
+      { $project: { _id: 0, income: 1 } },
     ]);
-    if (!statSpent || !totalSpent || !totalIncome) {
+
+    if (!categories || !totalSpent || !totalIncome) {
       throw new NotFound();
     }
-    res.json([statSpent, totalSpent, totalIncome]);
+
+    res.json({ categories, totalSpent, totalIncome });
   } catch (error) {
     next(error);
   }

@@ -30,7 +30,7 @@ const transactionSchema = Schema(
     sum: {
       type: Number,
       required: true,
-      min: 0,
+      min: 1,
     },
     balance: {
       type: Number,
@@ -50,7 +50,7 @@ const schemaCreateTransaction = Joi.object({
   type: Joi.boolean().required(),
   category: Joi.string().required(),
   comment: Joi.string().optional(),
-  sum: Joi.number().min(0.01).integer().required(),
+  sum: Joi.number().min(1).integer().required(),
 });
 
 const schemaUpdateTransaction = Joi.object({
@@ -60,7 +60,7 @@ const schemaUpdateTransaction = Joi.object({
   type: Joi.boolean().required(),
   category: Joi.string().optional(),
   comment: Joi.string().optional(),
-  sum: Joi.number().min(0.01).integer().optional(),
+  sum: Joi.number().min(1).integer().optional(),
 }).or('type', 'category', 'comment', 'sum');
 
 const Transaction = model('transaction', transactionSchema);
