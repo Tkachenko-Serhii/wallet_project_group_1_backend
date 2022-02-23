@@ -400,7 +400,7 @@
           }
         }
       },
-      "transactions/statistics":{
+      "/transactions/statistics":{
         "get": {
           "tags": ["Transactions"],
           "summary": "Get user transaction statistics",
@@ -411,16 +411,16 @@
               "description": "choose month for stats info",
               "required": true,
               "schema": {
-                "type": "string"
+                "type": "integer"
               }
             },
             {
               "name": "year",
               "in": "query",
-              "description": "choose month for stats info",
+              "description": "choose year for stats info",
               "required": true,
               "schema": {
-                "type": "string"
+                "type": "integer"
               }
             }
           ],
@@ -788,7 +788,7 @@
               "description": "year of the transaction"
             },
             "date": {
-              "type": "integer",
+              "type": "string",
               "description": "day of the transaction"
             },
           "type": {
@@ -799,10 +799,6 @@
             "type": "string",
             "description": "category of the transaction"
           },
-          "comment": {
-            "type": "string",
-            "description": "additional info about the transaction"
-          },
           "sum": {
             "type": "number",
             "description": "amount of the transaction"
@@ -811,10 +807,9 @@
           "example": {
             "month": 2,
             "year": 2022,
-            "date": "25",
+            "date": 25,
             "type":"true",
             "category":"Regular income",
-            "comment": "my fist income as a developer",
             "sum": 30578
           }
         },
@@ -859,7 +854,53 @@
           }
         },
         "GetStatsInfo":{
-          
+          "type": "object",
+          "properties": {
+            "categories": {
+              "type": "array",
+              "items": {
+                  "type": "object",
+                  "properties": {
+              "_id": {
+                "type": "string",
+                "description": "User's category"
+              },
+              "total": {
+                "type": "number",
+                "description": "Total amount spent"
+              }}
+              }
+            },
+            "totalSpent": {
+              "type": "array",
+              "items": {
+                  "type": "object",
+                  "properties": {
+                      "spent": {
+                      "type": "number",
+                      "description": "Total amount spent"
+                    }}
+                    }
+            },
+            "totalIncome": {
+              "type": "array",
+              "items": {
+                  "type": "object",
+                  "properties": {
+                      "totalIncome": {
+                      "type": "number",
+                      "description": "Total income"
+                    }}
+                    }
+            }},
+          "example": {
+            "month": "02",
+            "year": "2022",
+            "date": "25",
+            "type":"true",
+            "comment": "my fist incom as a developer",
+            "sum": "30578,77"
+          }
         }
       },
       "securitySchemes": {
