@@ -12,7 +12,7 @@ const transactionSchema = Schema(
       required: true,
     },
     date: {
-      type: String,
+      type: Date,
       required: true,
     },
     type: {
@@ -46,7 +46,7 @@ const transactionSchema = Schema(
 const schemaCreateTransaction = Joi.object({
   month: Joi.number().min(1).max(12).integer().required(),
   year: Joi.number().min(1975).integer().required(),
-  date: Joi.string().required(),
+  date: Joi.date().required(),
   type: Joi.boolean().required(),
   category: Joi.string().required(),
   comment: Joi.string().optional(),
@@ -56,7 +56,7 @@ const schemaCreateTransaction = Joi.object({
 const schemaUpdateTransaction = Joi.object({
   month: Joi.number().min(1).max(12).integer().required(),
   year: Joi.number().min(1975).integer().required(),
-  date: Joi.string().required(),
+  date: Joi.date().required(),
   type: Joi.boolean().required(),
   category: Joi.string().optional(),
   comment: Joi.string().optional(),
