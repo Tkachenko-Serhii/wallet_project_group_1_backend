@@ -12,8 +12,12 @@ const login = async (req, res, next) => {
     }
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+    if (!user) {
+      throw new Unauthorized('Email does not exist or Password is wrong');
+    }
     const passwordCompare = await bcrypt.compare(password, user.password);
-    if (!user || !passwordCompare) {
+
+    if (!passwordCompare) {
       throw new Unauthorized('Email does not exist or Password is wrong');
     }
 
