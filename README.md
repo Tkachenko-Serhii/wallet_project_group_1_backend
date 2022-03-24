@@ -1,10 +1,10 @@
 # Wallet BackEnd
 
-Финальный проект по курсу **React.js/Node.js** группы №1 (JS#34, GoIT).
+Final project after the course **React.js/Node.js** group №1 (JS#34, GoIT).
 
 ## Tech stack
 
-Для реализации проекта были использованы следующие технологии: JavaScript
+The following technologies were used to implement the project: JavaScript
 (99.9%), Shell (0.1%)
 
 ## Developers
