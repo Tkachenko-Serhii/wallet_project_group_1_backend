@@ -4,7 +4,7 @@ Final project after the course **React.js/Node.js** group №1 (JS#34, GoIT).
 
 ## Docs
 
-- documentation for using the backend at the [link](https://wallet-project-group-1.herokuapp.com/api-docs/)
+You can find the documentation for using the backend by following the [link](https://wallet-project-group-1.herokuapp.com/api-docs/)
 
 ## Tech stack
 
