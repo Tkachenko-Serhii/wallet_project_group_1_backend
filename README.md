@@ -1,4 +1,4 @@
-# Wallet BackEnd
+# MoneyFlow BackEnd
 
 Final project after the course **React.js/Node.js** group №1 (JS#34, GoIT).
 
