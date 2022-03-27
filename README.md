@@ -18,3 +18,7 @@
 - [Vladislav Yuskiv](https://www.linkedin.com/in/%D0%B2%D0%BB%D0%B0%D0%B4%D0%B8%D1%81%D0%BB%D0%B0%D0%B2-%D1%8E%D1%81%D1%8C%D0%BA%D1%96%D0%B2-565a64230/)
 - [Valeryia Bedulyna](https://www.linkedin.com/in/valeriia-liferova-3b1656221/)
 - [Igor Griniov](https://www.linkedin.com/in/igor-griniov-a94b3a211/)
+
+## Swagger link
+
+- [Click here to go to Swagger link](https://wallet-project-group-1.herokuapp.com/api-docs/)
